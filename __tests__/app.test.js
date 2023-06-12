@@ -60,8 +60,23 @@ describe("auth", () => {
   });
 });
 
-describe("POST /api/parkings", () => {
-  test("POST - status 200 - responds with username and user token", () => {
+describe("/api/parkings", () => {
+  test("GET - status 200 - responds with an array of parkings", () => {
+    return request(app)
+      .get("/api/parkings")
+      .then((response) => {
+        const { parkings } = response.body;
+        expect(parkings.length).toBe(4);
+        parkings.map((parking) => {
+          expect(typeof parking.parking_id).toBe("number");
+          expect(typeof parking.host_id).toBe("number");
+          expect(typeof parking.location).toBe("string"); // TODO : research type for location
+          expect(typeof parking.price).toBe("number");
+          expect(typeof parking.is_booked).toBe("boolean");
+        });
+      });
+  });
+  test("POST - status 201 - responds with username and user token", () => {
     return request(app)
       .post("/api/parkings")
       .send({

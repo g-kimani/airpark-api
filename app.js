@@ -5,7 +5,10 @@ const LocalStrategy = require("passport-local");
 const db = require("./db/connection.js");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("./utils.js");
-const { addParkingController } = require("./controllers/parking.controller.js");
+const {
+  addParkingController,
+  getParkingsController,
+} = require("./controllers/parking.controller.js");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
@@ -156,6 +159,7 @@ app.post("/signup", (req, res, next) => {
 });
 
 app.post("/api/parkings", addParkingController);
+app.get("/api/parkings", getParkingsController);
 
 app.use((err, req, res, next) => {
   console.log("Error :", err);

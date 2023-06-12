@@ -11,7 +11,12 @@ exports.addParkingModel = (parking) => {
       [parking.host_id, parking.location, parking.price, parking.is_booked]
     )
     .then(({ rows }) => {
-      console.log(rows, "model");
       return rows[0];
     });
+};
+
+exports.getParkingsModel = () => {
+  return db.query(`SELECT * FROM parkings;`).then(({ rows }) => {
+    return rows;
+  });
 };

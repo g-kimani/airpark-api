@@ -2,7 +2,7 @@ const db = require("../connection.js");
 const bcrypt = require("bcrypt");
 const format = require("pg-format");
 
-const seed = async ({ users, parkings }) => {
+const seed = ({ users, parkings }) => {
   return db
     .query("DROP TABLE IF EXISTS parkings;")
     .then(() => db.query("DROP TABLE IF EXISTS users;"))
