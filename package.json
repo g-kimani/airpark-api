@@ -5,10 +5,10 @@
   "main": "listen.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon listen.js",
+    "start": "node listen.js",
     "setup-db": "psql -f ./db/setup_db.sql",
     "seed": "node ./db/seeds/run_seed.js",
-    "dev": "npm run start"
+    "dev": "nodemon listen.js"
   },
   "keywords": [],
   "author": "",
