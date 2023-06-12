@@ -2,34 +2,33 @@ const db = require("../connection.js");
 const bcrypt = require("bcrypt");
 const format = require("pg-format");
 
-const seed = async () => {
-  await db.query(`DROP TABLE IF EXISTS users;`);
-  await db.query(`
-    CREATE TABLE users(
+const seed = async ({ users }) => {
+  return db
+    .query("DROP TABLE IF EXISTS users;")
+    .then(() => db.query("DROP TABLE IF EXISTS parkings;"))
+    .then(() =>
+      db.query(`CREATE TABLE users(
         user_id SERIAL PRIMARY KEY,
         username VARCHAR NOT NULL,
-        password_hash BYTEA NOT NULL,
-        email VARCHAR NOT NULL
-    )`);
-  const saltRounds = 10;
-  // get sample users and their passwords
-  const user1 = "tim";
-  const user1Pass = await bcrypt.hash(user1, saltRounds);
-  const user2 = "jim";
-  const user2Pass = await bcrypt.hash(user2, saltRounds);
-  const userQuery = format(
-    `
-        INSERT INTO users
-        (username, password_hash, email)
+        email VARCHAR NOT NULL,
+        password_hash BYTEA NOT NULL
+    )`)
+    )
+    .then(() => {
+      const userData = users.map((user) => {
+        return [user.username, user.email, user.password_hash];
+      });
+      const usersQuery = format(
+        `
+      INSERT INTO users
+        (username, email, password_hash)
         VALUES
         %L
-    `,
-    [
-      [user1, user1Pass, "tim@gmail.com"],
-      [user2, user2Pass, "jim@gmail.com"],
-    ]
-  );
-  await db.query(userQuery);
+      `,
+        userData
+      );
+      return db.query(usersQuery);
+    });
 };
 
 const createAndSeedParkings = () => {
