@@ -22,7 +22,7 @@ const seed = async ({ users, parkings }) => {
         host_id INT REFERENCES users(user_id),
         location VARCHAR,
         price FLOAT,
-        isBooked BOOLEAN NOT NULL
+        is_booked BOOLEAN NOT NULL
       )
       `
       )
@@ -48,13 +48,13 @@ const seed = async ({ users, parkings }) => {
           parking.host_id,
           parking.location,
           parking.price,
-          parking.isBooked,
+          parking.is_booked,
         ];
       });
       const parkingQuery = format(
         `
       INSERT INTO parkings
-        (host_id, location, price, isBooked)
+        (host_id, location, price, is_booked)
         VALUES
         %L
       `,

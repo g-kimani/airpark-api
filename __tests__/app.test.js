@@ -2,9 +2,11 @@ const request = require("supertest");
 const app = require("../app.js");
 const connection = require("../db/connection");
 const seed = require("../db/seeds/seed.js");
+const users = require("../db/data/users.js");
+const parkings = require("../db/data/parkings.js");
 
 afterAll(() => connection.end());
-beforeEach(() => seed());
+beforeEach(() => seed({ users, parkings }));
 
 describe("/api", () => {
   test("GET - status 200 - responds with a message all ok", () => {
@@ -55,5 +57,28 @@ describe("auth", () => {
           expect(message).toBe("Incorrect email or password");
         });
     });
+  });
+});
+
+describe("POST /api/parkings", () => {
+  test("POST - status 200 - responds with username and user token", () => {
+    return request(app)
+      .post("/api/parkings")
+      .send({
+        host_id: 4,
+        location: "KT5 3SD",
+        price: 1.9,
+        is_booked: false,
+      })
+      .expect(201)
+      .then((response) => {
+        const { parking_id, host_id, location, price, is_booked } =
+          response.body.parking;
+        expect(typeof parking_id).toBe("number");
+        expect(host_id).toBe(4);
+        expect(location).toBe("KT5 3SD");
+        expect(price).toBe(1.9);
+        expect(is_booked).toBe(false);
+      });
   });
 });
