@@ -9,6 +9,7 @@ const {
   addParkingController,
   getParkingsController,
 } = require("./controllers/parking.controller.js");
+const { addBookingController } = require("./controllers/booking.controller.js");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
@@ -160,6 +161,8 @@ app.post("/signup", (req, res, next) => {
 
 app.post("/api/parkings", addParkingController);
 app.get("/api/parkings", getParkingsController);
+
+app.post("/api/bookings", addBookingController);
 
 app.use((err, req, res, next) => {
   console.log("Error :", err);
