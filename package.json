@@ -1,0 +1,32 @@
+{
+  "name": "airpark-api",
+  "version": "1.0.0",
+  "description": "airpark api",
+  "main": "listen.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon listen.js",
+    "setup-db": "psql -f ./db/setup_db.sql",
+    "seed": "node ./db/seeds/run_seed.js",
+    "dev": "npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.11.0",
+    "pg-format": "^1.0.4"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  }
+}
