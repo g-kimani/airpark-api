@@ -2,10 +2,10 @@ const db = require("../connection.js");
 const bcrypt = require("bcrypt");
 const format = require("pg-format");
 
-const seed = async ({ users }) => {
+const seed = async ({ users, parkings }) => {
   return db
-    .query("DROP TABLE IF EXISTS users;")
-    .then(() => db.query("DROP TABLE IF EXISTS parkings;"))
+    .query("DROP TABLE IF EXISTS parkings;")
+    .then(() => db.query("DROP TABLE IF EXISTS users;"))
     .then(() =>
       db.query(`CREATE TABLE users(
         user_id SERIAL PRIMARY KEY,
@@ -13,6 +13,19 @@ const seed = async ({ users }) => {
         email VARCHAR NOT NULL,
         password_hash BYTEA NOT NULL
     )`)
+    )
+    .then(() =>
+      db.query(
+        `
+      CREATE TABLE parkings(
+        parking_id SERIAL PRIMARY KEY,
+        host_id INT REFERENCES users(user_id),
+        location VARCHAR,
+        price FLOAT,
+        is_booked BOOLEAN NOT NULL
+      )
+      `
+      )
     )
     .then(() => {
       const userData = users.map((user) => {
@@ -28,23 +41,27 @@ const seed = async ({ users }) => {
         userData
       );
       return db.query(usersQuery);
+    })
+    .then(() => {
+      const parkingData = parkings.map((parking) => {
+        return [
+          parking.host_id,
+          parking.location,
+          parking.price,
+          parking.is_booked,
+        ];
+      });
+      const parkingQuery = format(
+        `
+      INSERT INTO parkings
+        (host_id, location, price, is_booked)
+        VALUES
+        %L
+      `,
+        parkingData
+      );
+      return db.query(parkingQuery);
     });
-};
-
-const createAndSeedParkings = () => {
-  return db
-    .query(
-      `
-  CREATE TABLE parkings(
-    parking_id SERIAL PRIMARY KEY,
-    host_id INT REFERENCES users(user_id),
-    location VARCHAR
-    price FLOAT
-    isBooked BOOLEAN NOT NULL,
-  )
-  `
-    )
-    .then(() => {});
 };
 
 module.exports = seed;
