@@ -7,6 +7,7 @@
     "test": "jest",
     "start": "node listen.js",
     "setup-db": "psql -f ./db/setup_db.sql",
+    "play": "psql -f ./db/playground.sql > ./db/playground.txt",
     "seed": "node ./db/seeds/run_seed.js",
     "dev": "nodemon listen.js"
   },
@@ -19,7 +20,9 @@
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0",
     "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.11.0",
     "pg-format": "^1.0.4"
