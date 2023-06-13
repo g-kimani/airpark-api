@@ -20,3 +20,42 @@ exports.getParkingsModel = () => {
     return rows;
   });
 };
+
+exports.getParkingByIdModel = (parking_id) => {
+  return db
+    .query(
+      `
+      SELECT * FROM parkings
+      WHERE parking_id = $1
+  `,
+      [parking_id]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, message: "No parking found" });
+      } else {
+        return rows[0];
+      }
+    });
+};
+
+exports.updateParkingByIdModel = (user_id, price, parking_id) => {
+  return db
+    .query(
+      `
+      UPDATE parkings
+      SET
+        price = $1
+      WHERE parking_id = $2 AND host_id = $3
+      RETURNING *;
+  `,
+      [price, parking_id, user_id]
+    )
+    .then(({ rowCount, rows }) => {
+      if (rowCount === 0) {
+        return Promise.reject({ status: 404, message: "Parking not found" });
+      } else {
+        return rows[0];
+      }
+    });
+};

@@ -8,6 +8,8 @@ const { generateToken } = require("./utils.js");
 const {
   addParkingController,
   getParkingsController,
+  getParkingByIdController,
+  updateParkingByIdController,
 } = require("./controllers/parking.controller.js");
 const {
   addBookingController,
@@ -164,6 +166,13 @@ app.post("/signup", (req, res, next) => {
 
 app.post("/api/parkings", addParkingController);
 app.get("/api/parkings", getParkingsController);
+
+app.get("/api/parkings/:parking_id", getParkingByIdController);
+app.patch(
+  "/api/parkings/:parking_id",
+  passport.authenticate("jwt", { session: false }),
+  updateParkingByIdController
+);
 
 app.post(
   "/api/bookings",

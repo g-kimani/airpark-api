@@ -9,6 +9,7 @@
     "setup-db": "psql -f ./db/setup_db.sql",
     "play": "psql -f ./db/playground.sql > ./db/playground.txt",
     "seed": "node ./db/seeds/run_seed.js",
+    "seed-prod": "NODE_ENV=production npm run seed",
     "dev": "nodemon listen.js"
   },
   "keywords": [],
