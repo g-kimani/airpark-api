@@ -9,7 +9,11 @@ const {
   addParkingController,
   getParkingsController,
 } = require("./controllers/parking.controller.js");
-const { addBookingController } = require("./controllers/booking.controller.js");
+const {
+  addBookingController,
+  getBookingsForUserController,
+  getBookingByIdController,
+} = require("./controllers/booking.controller.js");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 
@@ -36,7 +40,6 @@ const jwtOptions = {
 };
 passport.use(
   new JwtStrategy(jwtOptions, (jwtPayload, done) => {
-    console.log(jwtPayload);
     // Check if the user exists in the database using the extracted user ID
     db.query("SELECT * FROM users WHERE user_id = $1", [jwtPayload.sub])
       .then(({ rows }) => {
@@ -162,10 +165,26 @@ app.post("/signup", (req, res, next) => {
 app.post("/api/parkings", addParkingController);
 app.get("/api/parkings", getParkingsController);
 
-app.post("/api/bookings", addBookingController);
+app.post(
+  "/api/bookings",
+  passport.authenticate("jwt", { session: false }),
+  addBookingController
+);
+app.get(
+  "/api/bookings",
+  passport.authenticate("jwt", { session: false }),
+  getBookingsForUserController
+);
+
+app.get(
+  "/api/bookings/:booking_id",
+  passport.authenticate("jwt", { session: false }),
+  getBookingByIdController
+);
 
 app.use((err, req, res, next) => {
   console.log("Error :", err);
+  res.status(err.status).send({ message: err.message });
   next();
 });
 

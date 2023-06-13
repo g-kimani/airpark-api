@@ -22,3 +22,26 @@ exports.addBookingModel = (booking) => {
       return rows[0];
     });
 };
+
+exports.getBookingsForUserModel = (user_id) => {
+  return db
+    .query("SELECT * FROM bookings WHERE traveller_id = $1", [user_id])
+    .then(({ rows }) => rows);
+};
+
+exports.getBookingByIdModel = (user_id, booking_id) => {
+  return db
+    .query(
+      `
+      SELECT * FROM bookings
+      WHERE traveller_id = $1 AND booking_id = $2`,
+      [user_id, booking_id]
+    )
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return Promise.reject({ status: 404, message: "No booking found" });
+      } else {
+        return rows[0];
+      }
+    });
+};
