@@ -74,7 +74,6 @@ const seed = ({ users, parkings, bookings }) => {
       `,
         parkingData
       );
-      console.log(parkingQuery);
       return db.query(parkingQuery);
     })
     .then(() => {
