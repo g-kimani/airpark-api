@@ -21,7 +21,7 @@ const seed = ({ users, parkings, bookings }) => {
       CREATE TABLE parkings(
         parking_id SERIAL PRIMARY KEY,
         host_id INT REFERENCES users(user_id),
-        location VARCHAR,
+        location POINT,
         price FLOAT,
         is_booked BOOLEAN NOT NULL
       )
@@ -60,7 +60,7 @@ const seed = ({ users, parkings, bookings }) => {
       const parkingData = parkings.map((parking) => {
         return [
           parking.host_id,
-          parking.location,
+          `(${parking.location.lat}, ${parking.location.long})`,
           parking.price,
           parking.is_booked,
         ];
@@ -74,6 +74,7 @@ const seed = ({ users, parkings, bookings }) => {
       `,
         parkingData
       );
+      console.log(parkingQuery);
       return db.query(parkingQuery);
     })
     .then(() => {
