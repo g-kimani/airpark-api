@@ -70,7 +70,7 @@ describe("/api/parkings", () => {
         parkings.map((parking) => {
           expect(typeof parking.parking_id).toBe("number");
           expect(typeof parking.host_id).toBe("number");
-          expect(typeof parking.location).toBe("string"); // TODO : research type for location
+          expect(typeof parking.location).toBe("object"); // TODO : research type for location
           expect(typeof parking.price).toBe("number");
           expect(typeof parking.is_booked).toBe("boolean");
         });
