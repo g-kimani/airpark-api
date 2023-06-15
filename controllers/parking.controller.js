@@ -6,7 +6,8 @@ const {
 } = require("../models/parking.model");
 
 exports.addParking = (req, res) => {
-  createParking(req.body).then((parking) => {
+  const { user_id } = req.user;
+  createParking({ host_id: user_id, ...req.body }).then((parking) => {
     res.status(201).send({ parking });
   });
 };

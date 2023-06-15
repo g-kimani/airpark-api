@@ -5,10 +5,16 @@ exports.createParking = (parking) => {
     .query(
       `
   INSERT INTO parkings
-  (host_id, location, price, is_booked)
+  (host_id, area, location, price, is_booked)
   VALUES
   ($1, $2, $3, $4) RETURNING *`,
-      [parking.host_id, "(0,0)", parking.price, parking.is_booked]
+      [
+        parking.host_id,
+        parking.area,
+        `(${parking.latitude}, ${parking.longitude})`,
+        parking.price,
+        parking.is_booked,
+      ]
     )
     .then(({ rows }) => {
       return rows[0];

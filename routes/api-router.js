@@ -18,7 +18,11 @@ apiRouter.get("/", (req, res) => {
 });
 
 apiRouter.get("/parkings", getParkings);
-apiRouter.post("/parkings", addParking);
+apiRouter.post(
+  "/parkings",
+  passport.authenticate("jwt", { session: false }),
+  addParking
+);
 
 apiRouter.get("/parkings/:parking_id", getParkingById);
 apiRouter.patch(
