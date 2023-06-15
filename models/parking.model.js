@@ -7,7 +7,7 @@ exports.createParking = (parking) => {
   INSERT INTO parkings
   (host_id, area, location, price, is_booked)
   VALUES
-  ($1, $2, $3, $4) RETURNING *`,
+  ($1, $2, $3, $4, $5) RETURNING *`,
       [
         parking.host_id,
         parking.area,
