@@ -29,7 +29,7 @@ passport.use(
           done(null, user);
         } else {
           // User not found, authentication failed
-          done(null, false);
+          done(null, false, { message: "user not found" });
         }
       })
       .catch((err) => {
