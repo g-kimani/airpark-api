@@ -1,6 +1,6 @@
 const db = require("../db/connection.js");
 
-exports.addBookingModel = (booking) => {
+exports.createBooking = (booking) => {
   return db
     .query(
       `
@@ -23,13 +23,13 @@ exports.addBookingModel = (booking) => {
     });
 };
 
-exports.getBookingsForUserModel = (user_id) => {
+exports.selectBookingsForUser = (user_id) => {
   return db
     .query("SELECT * FROM bookings WHERE traveller_id = $1", [user_id])
     .then(({ rows }) => rows);
 };
 
-exports.getBookingByIdModel = (user_id, booking_id) => {
+exports.selectBookingById = (user_id, booking_id) => {
   return db
     .query(
       `

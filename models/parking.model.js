@@ -1,6 +1,6 @@
 const db = require("../db/connection");
 
-exports.addParkingModel = (parking) => {
+exports.createParking = (parking) => {
   return db
     .query(
       `
@@ -8,20 +8,20 @@ exports.addParkingModel = (parking) => {
   (host_id, location, price, is_booked)
   VALUES
   ($1, $2, $3, $4) RETURNING *`,
-      [parking.host_id, parking.location, parking.price, parking.is_booked]
+      [parking.host_id, "(0,0)", parking.price, parking.is_booked]
     )
     .then(({ rows }) => {
       return rows[0];
     });
 };
 
-exports.getParkingsModel = () => {
+exports.selectParkings = () => {
   return db.query(`SELECT * FROM parkings;`).then(({ rows }) => {
     return rows;
   });
 };
 
-exports.getParkingByIdModel = (parking_id) => {
+exports.selectParkingById = (parking_id) => {
   return db
     .query(
       `
@@ -39,7 +39,7 @@ exports.getParkingByIdModel = (parking_id) => {
     });
 };
 
-exports.updateParkingByIdModel = (user_id, price, parking_id) => {
+exports.updateParkingById = (user_id, price, parking_id) => {
   return db
     .query(
       `
