@@ -2,7 +2,7 @@ const { Storage } = require("@google-cloud/storage");
 
 // Load the service account key JSON fil
 
-const keyFilename = `${__dirname}/../../service-account-key.json`;
+const keyFilename = `service-account-key.json`;
 const storage = new Storage({ keyFilename });
 
 const bucketName = "air-park-api";
