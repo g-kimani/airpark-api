@@ -1,19 +1,22 @@
 const db = require("../db/connection");
 
 exports.createParking = (parking) => {
+  console.log("🚀 ~ file: parking.model.js:4 ~ parking:", parking);
   return db
     .query(
       `
-  INSERT INTO parkings
-  (host_id, area, location, price, is_booked)
-  VALUES
-  ($1, $2, $3, $4, $5) RETURNING *`,
+      INSERT INTO parkings
+      (host_id, area, description, location, price, is_booked, picture)
+      VALUES
+      ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
       [
         parking.host_id,
         parking.area,
+        parking.description,
         `(${parking.latitude}, ${parking.longitude})`,
         parking.price,
-        parking.is_booked,
+        false,
+        parking.picture,
       ]
     )
     .then(({ rows }) => {

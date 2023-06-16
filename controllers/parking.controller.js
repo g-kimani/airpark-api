@@ -4,10 +4,16 @@ const {
   selectParkingById,
   updateParkingById: updateParkingByIdModel,
 } = require("../models/parking.model");
+const { deleteFile } = require("../routes/storage/file-storage");
+const { uploadFile } = require("../routes/storage/upload-file");
 
 exports.addParking = (req, res) => {
-  createParking({ ...req.body }).then((parking) => {
-    res.status(201).send({ parking });
+  uploadFile(req.file.path, req.filename).then(([file]) => {
+    deleteFile(file.name);
+    const publicUrl = `https://storage.googleapis.com/air-park-api/${file.name}`;
+    createParking({ ...req.body, picture: publicUrl }).then((parking) => {
+      res.status(201).send({ parking });
+    });
   });
 };
 

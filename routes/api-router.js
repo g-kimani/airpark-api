@@ -10,6 +10,7 @@ const {
   addBooking,
   getBookingById,
 } = require("../controllers/booking.controller");
+const { fileStorage } = require("./storage/file-storage");
 
 const apiRouter = require("express").Router();
 
@@ -18,7 +19,7 @@ apiRouter.get("/", (req, res) => {
 });
 
 apiRouter.get("/parkings", getParkings);
-apiRouter.post("/parkings", addParking);
+apiRouter.post("/parkings", fileStorage.single("picture"), addParking);
 
 apiRouter.get("/parkings/:parking_id", getParkingById);
 apiRouter.patch(
