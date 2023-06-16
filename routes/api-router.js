@@ -10,7 +10,7 @@ const {
   addBooking,
   getBookingById,
 } = require("../controllers/booking.controller");
-const { fileStorage } = require("./storage/file-storage");
+const multer = require("multer");
 
 const apiRouter = require("express").Router();
 
@@ -19,7 +19,12 @@ apiRouter.get("/", (req, res) => {
 });
 
 apiRouter.get("/parkings", getParkings);
-apiRouter.post("/parkings", fileStorage.single("picture"), addParking);
+apiRouter.post(
+  "/parkings",
+  passport.authenticate("jwt", { session: false }),
+  multer().single("picture"),
+  addParking
+);
 
 apiRouter.get("/parkings/:parking_id", getParkingById);
 apiRouter.patch(

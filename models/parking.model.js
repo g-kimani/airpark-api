@@ -1,7 +1,6 @@
 const db = require("../db/connection");
 
 exports.createParking = (parking) => {
-  console.log("🚀 ~ file: parking.model.js:4 ~ parking:", parking);
   return db
     .query(
       `
