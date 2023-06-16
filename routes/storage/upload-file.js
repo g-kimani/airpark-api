@@ -1,15 +1,9 @@
 const { Storage } = require("@google-cloud/storage");
 
-// Load the service account key JSON file
-const keyFilename = "service-account-key.json";
+// Load the service account key JSON fil
+
+const keyFilename = `${__dirname}/../../service-account-key.json`;
 const storage = new Storage({ keyFilename });
-function getImageMimeType(base64String) {
-  const matches = base64String.match(/^data:([A-Za-z-+/]+);base64/);
-  if (matches && matches.length >= 2) {
-    return matches[1];
-  }
-  return null;
-}
 
 const bucketName = "air-park-api";
 function uploadImage(file) {
