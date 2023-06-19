@@ -68,7 +68,7 @@ const seed = ({ users, parkings, bookings }) => {
           `(${parking.location.lat}, ${parking.location.long})`,
           parking.price,
           parking.is_booked,
-          null,
+          parking.picture,
         ];
       });
       const parkingQuery = format(
