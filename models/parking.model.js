@@ -23,7 +23,7 @@ exports.createParking = (parking) => {
     });
 };
 
-exports.selectParkings = (sort_by = "price", order = "desc", area) => {
+exports.selectParkings = (sort_by = "price", order = "asc", area) => {
   const validSortBy = ["price"];
   const validOrder = ["asc", "desc"];
 
