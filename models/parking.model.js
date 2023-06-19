@@ -27,12 +27,12 @@ exports.selectParkings = (sort_by = "price", order = "asc", area) => {
   const validSortBy = ["price"];
   const validOrder = ["asc", "desc"];
 
-  if (!validSortBy.includes(sort_by) || !validOrder.includes(order)) {
-    return Promise.reject({
-      status: 400,
-      msg: "Invalid query",
-    });
-  }
+  // if (!validSortBy.includes(sort_by) || !validOrder.includes(order)) {
+  //   return Promise.reject({
+  //     status: 400,
+  //     msg: "Invalid query",
+  //   });
+  // }
 
   let queryStr = `
     SELECT * 
