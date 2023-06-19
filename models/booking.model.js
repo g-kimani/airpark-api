@@ -5,9 +5,9 @@ exports.createBooking = (booking) => {
     .query(
       `
     INSERT INTO bookings
-    (traveller_id, parking_id, booking_start, booking_end, price)
+    (traveller_id, parking_id, booking_start, booking_end, price, status)
     VALUES
-    ($1, $2, $3, $4, $5)
+    ($1, $2, $3, $4, $5, $6)
     RETURNING *
     `,
       [
@@ -16,6 +16,7 @@ exports.createBooking = (booking) => {
         booking.booking_start,
         booking.booking_end,
         booking.price,
+        booking.status ?? "pending",
       ]
     )
     .then(({ rows }) => {
@@ -43,5 +44,44 @@ exports.selectBookingById = (user_id, booking_id) => {
       } else {
         return rows[0];
       }
+    });
+};
+
+exports.selectBookingsByParking = (user_id, parking_id) => {
+  return db
+    .query(
+      `
+    SELECT bookings.* FROM bookings
+    JOIN parkings
+    ON bookings.parking_id = parkings.parking_id
+    WHERE parkings.parking_id=$1 AND host_id=$2
+  `,
+      [parking_id, user_id]
+    )
+    .then((result) => {
+      return result.rows;
+    });
+};
+
+exports.updateBookingStatus = (user_id, booking_id, status) => {
+  return db
+    .query(
+      `
+      UPDATE bookings
+      SET
+          status = $1
+      FROM parkings
+      WHERE bookings.parking_id = parkings.parking_id
+      AND
+          bookings.booking_id = $2
+      AND
+          parkings.host_id = $3
+      RETURNING *
+
+  `,
+      [status, booking_id, user_id]
+    )
+    .then((result) => {
+      return result.rows[0];
     });
 };

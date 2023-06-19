@@ -9,6 +9,8 @@ const {
   getBookingsForUser,
   addBooking,
   getBookingById,
+  getBookingsForParking,
+  patchBookingStatus,
 } = require("../controllers/booking.controller");
 const multer = require("multer");
 
@@ -34,6 +36,12 @@ apiRouter.patch(
 );
 
 apiRouter.get(
+  "/parkings/:parking_id/bookings",
+  passport.authenticate("jwt", { session: false }),
+  getBookingsForParking
+);
+
+apiRouter.get(
   "/bookings",
   passport.authenticate("jwt", { session: false }),
   getBookingsForUser
@@ -48,6 +56,11 @@ apiRouter.get(
   "/bookings/:booking_id",
   passport.authenticate("jwt", { session: false }),
   getBookingById
+);
+apiRouter.patch(
+  "/bookings/:booking_id/status",
+  passport.authenticate("jwt", { session: false }),
+  patchBookingStatus
 );
 
 module.exports = apiRouter;
