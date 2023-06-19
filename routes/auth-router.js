@@ -87,6 +87,7 @@ authRouter.post(
     return res.status(200).send({
       user: req.user.username,
       email: req.user.email,
+      user_id: req.user.user_id,
       token,
     });
   }
