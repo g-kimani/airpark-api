@@ -38,6 +38,7 @@ module.exports = [
     host_id: 1,
     area: "Nottingham",
     location: { lat: 52.9471671, long: -1.1451422 },
+    price: 2.5,
     is_booked: false,
   },
 ];
