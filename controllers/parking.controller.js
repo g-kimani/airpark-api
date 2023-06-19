@@ -26,12 +26,15 @@ exports.addParking = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-exports.getParkings = (req, res) => {
-  selectParkings().then((parkings) => {
-    res.status(200).send({ parkings });
-  });
-};
+exports.getParkings = (req, res, next) => {
+  const { sort_by, order, area } = req.query;
 
+  selectParkings(sort_by, order, area)
+    .then((parkings) => {
+      res.status(200).send({ parkings });
+    })
+    .catch((err) => next(err));
+};
 exports.getParkingById = (req, res, next) => {
   const { parking_id } = req.params;
   selectParkingById(parking_id)
@@ -45,7 +48,6 @@ exports.patchParkingById = (req, res, next) => {
   const { price } = req.body;
   const { parking_id } = req.params;
   const { user_id } = req.user;
-  console.log("🚀 ~ file: parking.controller.js:33 ~ user_id:", user_id);
 
   updateParkingByIdModel(user_id, price, parking_id)
     .then((parking) => {
