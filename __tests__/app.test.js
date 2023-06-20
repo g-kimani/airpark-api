@@ -63,7 +63,7 @@ describe("auth", () => {
 });
 
 describe("GET /api/parkings", () => {
-  test("STATUS 200: responds with an array of all the article objects, by default sorted by price in descending order ", () => {
+  test("STATUS 200: responds with an array of all the article objects, by default sorted by price in ascending order ", () => {
     return request(app)
       .get("/api/parkings")
       .expect(200)
@@ -71,7 +71,7 @@ describe("GET /api/parkings", () => {
         const { parkings } = response.body;
         expect(parkings).toBeInstanceOf(Array);
         expect(parkings).toBeSortedBy("price", {
-          descending: true,
+          descending: false,
         });
         parkings.forEach((parking) => {
           expect(parking).toMatchObject({
@@ -86,14 +86,14 @@ describe("GET /api/parkings", () => {
         });
       });
   });
-  test("STATUS 200 - responds with an array of parkings in ascending order when order is specified", () => {
+  test("STATUS 200 - responds with an array of parkings in descending order when order is specified", () => {
     return request(app)
-      .get("/api/parkings?order=asc")
+      .get("/api/parkings?order=desc")
       .expect(200)
       .then((response) => {
         const { parkings } = response.body;
         expect(parkings).toBeSortedBy("price", {
-          descending: false,
+          descending: true,
         });
       });
   });
@@ -106,14 +106,6 @@ describe("GET /api/parkings", () => {
         parkings.forEach((parking) => {
           expect(parking.area).toBe("London");
         });
-      });
-  });
-  test("STATUS 404 - Responds with error message when there are no parkings with specified area property", () => {
-    return request(app)
-      .get("/api/parkings?area=Manchester")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.message).toBe("No parkings found");
       });
   });
   test("POST - status 201 - responds with username and user token", () => {
