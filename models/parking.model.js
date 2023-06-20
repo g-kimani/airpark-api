@@ -65,7 +65,6 @@ exports.selectParkings = ({
   }
 
   return db.query(queryStr).then((result) => {
-    console.log("in model", result.rows);
     return result.rows;
   });
 };

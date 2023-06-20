@@ -29,7 +29,6 @@ exports.addParking = (req, res, next) => {
 exports.getParkings = (req, res, next) => {
   selectParkings(req.query)
     .then((parkings) => {
-      console.log("in controller", parkings);
       res.status(200).send({ parkings });
     })
     .catch((err) => next(err));

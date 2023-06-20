@@ -61,32 +61,9 @@ describe("auth", () => {
     });
   });
 });
-describe("GET /api/profile", () => {
-  test("STATUS 200: responds with an object of the specified users information", () => {
-    return request(app)
-      .post("/login")
-      .send({
-        login: "tim@gmail.com",
-        password: "tim",
-      })
-      .expect(200)
-      .then((response) => {
-        return request(app)
-          .get("/profile")
-          .set("Authorization", `Bearer ${response.body.token}`)
-          .expect(200)
-          .then((response) => {
-            const { user, email, firstName, lastName } = response.body;
-            expect(user).toBe("tim");
-            expect(email).toBe("tim@gmail.com");
-            expect(firstName).toBe("tim");
-            expect(lastName).toBe("wentworth");
-          });
-      });
-  });
-});
+
 describe("GET /api/parkings", () => {
-  test("STATUS 200: responds with an array of all the parkings, by default sorted by price in ascending order ", () => {
+  test("STATUS 200: responds with an array of all the article objects, by default sorted by price in ascending order ", () => {
     return request(app)
       .get("/api/parkings")
       .expect(200)
@@ -117,6 +94,17 @@ describe("GET /api/parkings", () => {
         const { parkings } = response.body;
         expect(parkings).toBeSortedBy("price", {
           descending: true,
+        });
+      });
+  });
+  test("STATUS 200 - responds with an array of parkings with the specified area property", () => {
+    return request(app)
+      .get("/api/parkings?area=London")
+      .expect(200)
+      .then((response) => {
+        const { parkings } = response.body;
+        parkings.forEach((parking) => {
+          expect(parking.area).toBe("London");
         });
       });
   });

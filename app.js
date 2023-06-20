@@ -13,9 +13,9 @@ app.use(passport.initialize());
 // api logger
 app.use((req, res, next) => {
   // logs method url and time of any request made
-  // console.log(
-  //   `REQUEST: ${req.method} | ${req.url} | ${new Date().toISOString()}`
-  // );
+  console.log(
+    `REQUEST: ${req.method} | ${req.url} | ${new Date().toISOString()}`
+  );
   next();
 });
 
@@ -24,7 +24,7 @@ app.use("/", authRouter);
 app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
-  // console.log("Error :", err);
+  console.log("Error :", err);
   res.status(err.status).send({ message: err.message });
   next();
 });
