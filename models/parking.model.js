@@ -23,11 +23,17 @@ exports.createParking = (parking) => {
     });
 };
 
-exports.selectParkings = (sort_by = "price", order = "desc", area) => {
-  const validSortBy = ["price"];
+exports.selectParkings = ({
+  sort_by = "price",
+  order = "desc",
+  ne_lat,
+  ne_lng,
+  sw_lat,
+  sw_lng,
+}) => {
   const validOrder = ["asc", "desc"];
 
-  if (!validSortBy.includes(sort_by) || !validOrder.includes(order)) {
+  if (!validOrder.includes(order)) {
     return Promise.reject({
       status: 400,
       msg: "Invalid query",
@@ -37,29 +43,22 @@ exports.selectParkings = (sort_by = "price", order = "desc", area) => {
   let queryStr = `
     SELECT * 
     FROM parkings 
-    WHERE is_booked = false 
+    WHERE is_booked = false
+    AND location[0] >= ${sw_lat}
+    AND location[0] <= ${ne_lat}
+    AND location[1] >= ${sw_lng}
+    AND location[1] <= ${ne_lng}
   `;
 
   const queryParams = [];
 
-  if (area) {
-    queryStr += ` AND area = $1 `;
-    queryParams.push(area);
-  }
-
-  queryStr += ` ORDER BY ${sort_by}`;
+  queryStr += `ORDER BY price`;
 
   if (order === "asc" || order === "desc") {
     queryStr += ` ${order.toUpperCase()};`;
   }
 
-  return db.query(queryStr, queryParams).then((result) => {
-    if (result.rows.length === 0) {
-      return Promise.reject({
-        status: 404,
-        message: "No parkings found",
-      });
-    }
+  return db.query(queryStr).then((result) => {
     return result.rows;
   });
 };

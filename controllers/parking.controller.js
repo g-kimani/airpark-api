@@ -27,9 +27,7 @@ exports.addParking = (req, res, next) => {
 };
 
 exports.getParkings = (req, res, next) => {
-  const { sort_by, order, area } = req.query;
-
-  selectParkings(sort_by, order, area)
+  selectParkings(req.query)
     .then((parkings) => {
       res.status(200).send({ parkings });
     })
