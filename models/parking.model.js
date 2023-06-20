@@ -24,8 +24,8 @@ exports.createParking = (parking) => {
 };
 
 exports.selectParkings = ({
-  sort_by = "price",
-  order = "desc",
+  order = "asc",
+  host_id,
   ne_lat,
   ne_lng,
   sw_lat,
@@ -44,13 +44,19 @@ exports.selectParkings = ({
     SELECT * 
     FROM parkings 
     WHERE is_booked = false
+  `;
+
+  // TODO: Stop usign string interpolation
+  if (host_id) {
+    queryStr += `AND host_id = ${host_id}`;
+  } else {
+    queryStr += `
     AND location[0] >= ${sw_lat}
     AND location[0] <= ${ne_lat}
     AND location[1] >= ${sw_lng}
     AND location[1] <= ${ne_lng}
-  `;
-
-  const queryParams = [];
+    `;
+  }
 
   queryStr += `ORDER BY price`;
 

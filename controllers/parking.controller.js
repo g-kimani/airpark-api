@@ -2,7 +2,7 @@ const {
   createParking,
   selectParkings,
   selectParkingById,
-  updateParkingById: updateParkingByIdModel,
+  updateParkingById,
 } = require("../models/parking.model");
 const { uploadImage } = require("../routes/storage/upload-file");
 
@@ -47,7 +47,7 @@ exports.patchParkingById = (req, res, next) => {
   const { parking_id } = req.params;
   const { user_id } = req.user;
 
-  updateParkingByIdModel(user_id, price, parking_id)
+  updateParkingById(user_id, price, parking_id)
     .then((parking) => {
       res.status(200).send({ parking });
     })
