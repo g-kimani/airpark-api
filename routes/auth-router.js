@@ -94,7 +94,7 @@ authRouter.post(
 );
 
 authRouter.post("/signup", (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { username, password, email, firstname, lastname } = req.body;
   db.query(`SELECT * FROM users WHERE username=$1`, [username])
     .then(({ rows }) => {
       if (rows.length > 0) {
@@ -114,12 +114,12 @@ authRouter.post("/signup", (req, res, next) => {
             return db.query(
               `
             INSERT INTO users
-            (username, password_hash, email)
+            (username, password_hash, email, firstname, lastname)
             VALUES
-            ($1, $2, $3)
-            RETURNING user_id, username, email;
+            ($1, $2, $3, $4, $5)
+            RETURNING user_id, username, email, firstname, lastname;
           `,
-              [username, password_hash, email]
+              [username, password_hash, email, firstname, lastname]
             );
           })
           .then(({ rows }) => {
@@ -141,9 +141,13 @@ authRouter.get(
     if (!user) {
       return res.status(401).send(req.authInfo);
     }
-    return res
-      .status(200)
-      .send({ user: user.username, email: user.email, user_id: user.user_id });
+    return res.status(200).send({
+      user: user.username,
+      email: user.email,
+      user_id: user.user_id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+    });
   }
 );
 
