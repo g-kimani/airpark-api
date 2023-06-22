@@ -12,7 +12,10 @@ const seed = ({ users, parkings, bookings }) => {
         user_id SERIAL PRIMARY KEY,
         username VARCHAR NOT NULL,
         email VARCHAR NOT NULL,
-        password_hash BYTEA NOT NULL
+        password_hash BYTEA NOT NULL,
+        firstname VARCHAR NOT NULL,
+        lastname VARCHAR NOT NULL
+        
     )`)
     )
     .then(() => {
@@ -46,12 +49,18 @@ const seed = ({ users, parkings, bookings }) => {
     })
     .then(() => {
       const userData = users.map((user) => {
-        return [user.username, user.email, user.password_hash];
+        return [
+          user.username,
+          user.email,
+          user.password_hash,
+          user.firstname,
+          user.lastname,
+        ];
       });
       const usersQuery = format(
         `
       INSERT INTO users
-        (username, email, password_hash)
+        (username, email, password_hash, firstname, lastname)
         VALUES
         %L
       `,
