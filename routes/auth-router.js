@@ -167,6 +167,8 @@ authRouter.patch(
     let avatarUrl = "";
     if (file) {
       avatarUrl = await uploadImage(file);
+    } else {
+      avatarUrl = body.avatar_url ?? "";
     }
     db.query(
       `
