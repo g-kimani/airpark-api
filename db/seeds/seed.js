@@ -14,7 +14,8 @@ const seed = ({ users, parkings, bookings }) => {
         email VARCHAR NOT NULL,
         password_hash BYTEA NOT NULL,
         firstname VARCHAR NOT NULL,
-        lastname VARCHAR NOT NULL
+        lastname VARCHAR NOT NULL,
+        avatar_url VARCHAR
         
     )`)
     )

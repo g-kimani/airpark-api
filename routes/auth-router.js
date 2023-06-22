@@ -4,6 +4,8 @@ const db = require("../db/connection.js");
 const bcrypt = require("bcrypt");
 const { generateToken } = require("./utils.js");
 const { updateParkingById } = require("../models/parking.model.js");
+const multer = require("multer");
+const { uploadImage } = require("./storage/upload-file.js");
 
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
@@ -151,7 +153,48 @@ authRouter.get(
       user_id: user.user_id,
       firstname: user.firstname,
       lastname: user.lastname,
+      avatar: user.avatar,
     });
+  }
+);
+
+authRouter.patch(
+  "/profile",
+  passport.authenticate("jwt", { session: false }),
+  multer().single("avatar"),
+  async (req, res, next) => {
+    const { user, file, body } = req;
+    let avatarUrl = "";
+    if (file) {
+      avatarUrl = await uploadImage(file);
+    }
+    db.query(
+      `
+      UPDATE users
+      SET
+        firstname = $1,
+        lastname = $2,
+        username = $3,
+        email = $4,
+        avatar_url = $5
+      WHERE
+        user_id = $6
+      RETURNING firstname, lastname, username, email, user_id, avatar_url
+    `,
+      [
+        body.firstname,
+        body.lastname,
+        body.username,
+        body.email,
+        avatarUrl,
+        user.user_id,
+      ]
+    )
+      .then((result) => {
+        const user = result.rows[0];
+        res.status(200).send({ user });
+      })
+      .catch((err) => next(err));
   }
 );
 

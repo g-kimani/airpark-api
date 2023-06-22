@@ -29,4 +29,11 @@ module.exports = [
     email: "gabriel@gmail.com",
     password_hash: bcrypt.hashSync("gabriel", saltRounds),
   },
+  {
+    firstname: "Mc",
+    lastname: "Lovin",
+    username: "McLovin",
+    email: "mc@lovin.com",
+    password_hash: bcrypt.hashSync("mclovin", saltRounds),
+  },
 ];
