@@ -15,8 +15,8 @@ const seed = ({ users, parkings, bookings }) => {
         password_hash BYTEA NOT NULL,
         firstname VARCHAR NOT NULL,
         lastname VARCHAR NOT NULL,
-        avatar_url VARCHAR
-        
+        avatar_url VARCHAR,
+        phone_number VARCHAR
     )`)
     )
     .then(() => {
@@ -56,12 +56,13 @@ const seed = ({ users, parkings, bookings }) => {
           user.password_hash,
           user.firstname,
           user.lastname,
+          user.phone_number,
         ];
       });
       const usersQuery = format(
         `
       INSERT INTO users
-        (username, email, password_hash, firstname, lastname)
+        (username, email, password_hash, firstname, lastname, phone_number)
         VALUES
         %L
       `,

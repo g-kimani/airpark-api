@@ -154,6 +154,7 @@ authRouter.get(
       firstname: user.firstname,
       lastname: user.lastname,
       avatar_url: user.avatar_url,
+      phone_number: user.phone_number,
     });
   }
 );

@@ -34,8 +34,12 @@ exports.selectBookingById = (user_id, booking_id) => {
   return db
     .query(
       `
-      SELECT * FROM bookings
-      WHERE traveller_id = $1 AND booking_id = $2`,
+      SELECT bookings.*, phone_number AS host_phone_number FROM bookings
+      JOIN parkings
+      ON bookings.parking_id = parkings.parking_id
+      JOIN users
+      ON parkings.host_id = users.user_id
+      WHERE traveller_id = $1 AND  booking_id = $2`,
       [user_id, booking_id]
     )
     .then(({ rows }) => {

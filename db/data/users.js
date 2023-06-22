@@ -7,6 +7,7 @@ module.exports = [
     username: "tim",
     email: "tim@gmail.com",
     password_hash: bcrypt.hashSync("tim", saltRounds),
+    phone_number: "07123456789",
   },
   {
     firstname: "jim",
@@ -14,6 +15,7 @@ module.exports = [
     username: "jim1",
     email: "jim@gmail.com",
     password_hash: bcrypt.hashSync("jim", saltRounds),
+    phone_number: "07123456789",
   },
   {
     firstname: "george",
@@ -21,6 +23,7 @@ module.exports = [
     username: "george2",
     email: "george@gmail.com",
     password_hash: bcrypt.hashSync("george", saltRounds),
+    phone_number: "07123456789",
   },
   {
     firstname: "gaberiel",
@@ -28,6 +31,7 @@ module.exports = [
     username: "gabriel3",
     email: "gabriel@gmail.com",
     password_hash: bcrypt.hashSync("gabriel", saltRounds),
+    phone_number: "07123456789",
   },
   {
     firstname: "Mc",
