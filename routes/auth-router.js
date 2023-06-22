@@ -125,7 +125,11 @@ authRouter.post("/signup", (req, res, next) => {
           .then(({ rows }) => {
             const newUser = rows[0];
             const token = generateToken(newUser);
-            res.status(201).send({ user: newUser.username, token });
+            res.status(201).send({
+              user: newUser.username,
+              user_id: newUser.user_id,
+              token,
+            });
           })
           .catch((err) => next(err));
       }
