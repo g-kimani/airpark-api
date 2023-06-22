@@ -153,7 +153,7 @@ authRouter.get(
       user_id: user.user_id,
       firstname: user.firstname,
       lastname: user.lastname,
-      avatar: user.avatar,
+      avatar_url: user.avatar_url,
     });
   }
 );

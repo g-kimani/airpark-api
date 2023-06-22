@@ -76,12 +76,27 @@ exports.updateBookingStatus = (user_id, booking_id, status) => {
           bookings.booking_id = $2
       AND
           parkings.host_id = $3
-      RETURNING *
+      RETURNING bookings.*
 
   `,
       [status, booking_id, user_id]
     )
     .then((result) => {
+      if (status.toLowerCase() === "confirmed") {
+        return db
+          .query(
+            `
+          UPDATE parkings
+          SET
+            is_booked = $1
+          WHERE parking_id = $2
+        `,
+            [true, result.rows[0].parking_id]
+          )
+          .then(() => {
+            return result.rows[0];
+          });
+      }
       return result.rows[0];
     });
 };
